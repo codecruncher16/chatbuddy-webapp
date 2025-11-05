@@ -194,7 +194,7 @@ def respond(user_input):
     elif "what's up" in user_input_lower or "whats up" in user_input_lower:
         return chit_chat(user_input_lower)
     elif "what's your name" in user_input_lower or "whats your name" in user_input_lower:
-    return "I am ChatBuddy 🤖, your friendly chatbot!"
+        return "I am ChatBuddy 🤖, your friendly chatbot!"
     
 
     # Farewell
