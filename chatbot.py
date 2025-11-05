@@ -1,15 +1,63 @@
-# chatbot_app.py
+# streamlit_app.py
 # -*- coding: utf-8 -*-
 import streamlit as st
 import random
+import re  # For regex symptom detection
 
 # --- List of jokes ---
 jokes = [
-    "Why don't skeletons fight each other? They don't have the guts!",
-    "What did the zero say to the eight? Nice belt!",
-    "Why was the math book sad? Because it had too many problems.",
-    "I told my computer I needed a break, and now it won’t stop sending me Kit-Kats.",
-    "Why don’t some couples go to the gym? Because some relationships don’t work out."
+    "Why did the computer go to the doctor? It caught a virus!",
+    "Why do programmers prefer dark mode? Because light attracts bugs!",
+    "Why did the math book look sad? It had too many problems.",
+    "Why did the scarecrow win an award? He was outstanding in his field!",
+    "Why don’t skeletons fight each other? They don’t have the guts.",
+    "Why did the coffee file a police report? It got mugged!",
+    "Why was the equal sign so humble? Because it knew it wasn’t less than or greater than anyone else.",
+    "Why did the student eat his homework? Because the teacher said it was a piece of cake!",
+    "Why did the cookie go to the hospital? Because it felt crummy!",
+    "Why did the bicycle fall over? Because it was two-tired!",
+    "Why did the tomato turn red? Because it saw the salad dressing!",
+    "Why don’t scientists trust atoms? Because they make up everything!",
+    "Why did the physics teacher break up with the biology teacher? There was no chemistry.",
+    "Why did the computer keep sneezing? It had too many tabs open.",
+    "Why was the cell phone wearing glasses? It lost its contacts.",
+    "Why did the programmer quit his job? He didn’t get arrays.",
+    "Why was the JavaScript developer sad? Because he didn’t Node how to Express himself.",
+    "Why did the PowerPoint cross the road? To get to the other slide.",
+    "Why did the picture go to jail? Because it was framed!",
+    "Why was the belt arrested? For holding up a pair of pants.",
+    "Why don’t some couples go to the gym? Because some relationships don’t work out.",
+    "Why was the broom late? It overswept.",
+    "Why did the golfer bring extra pants? In case he got a hole in one.",
+    "Why did the mushroom go to the party? Because he was a fungi.",
+    "Why don’t eggs tell jokes? They might crack up.",
+    "Why did the kid bring a ladder to school? Because he wanted to go to high school.",
+    "Why was the computer cold? It left its Windows open.",
+    "Why did the man put his money in the freezer? He wanted cold hard cash.",
+    "Why did the calendar go to therapy? Its days were numbered.",
+    "Why don’t oysters share their pearls? Because they’re shellfish.",
+    "Why did the man run around his bed? Because he was trying to catch up on sleep.",
+    "Why did the smartphone go to school? It wanted to be smarter.",
+    "Why did the student bring a pencil to the party? In case he wanted to draw some attention.",
+    "Why did the web developer go broke? Because he used up all his cache.",
+    "Why did the computer show up at work late? It had a hard drive.",
+    "Why did the teacher go to the beach? To test the waters.",
+    "Why don’t vampires attack programmers? They don’t like bugs.",
+    "Why was the math lecture so long? The professor kept going off on a tangent.",
+    "Why did the student eat a light bulb? He wanted to be bright.",
+    "Why did the AI break up with its user? It felt used.",
+    "Why did the chicken join a band? Because it had the drumsticks.",
+    "Why was the robot so bad at soccer? It kept kicking up sparks.",
+    "Why did the grape stop in the middle of the road? It ran out of juice.",
+    "Why did the skeleton go to the party alone? He had no body to go with.",
+    "Why don’t cats play poker in the jungle? Too many cheetahs.",
+    "Why was the broom so happy? It swept the competition away.",
+    "Why did the teacher wear sunglasses? Because her students were so bright.",
+    "Why did the physics book look sad? Because it had so much potential.",
+    "Why did the computer sit on a clock? To catch up on its time.",
+    "Why did the banana go to the doctor? It wasn’t peeling well.",
+    "Why did the music teacher go to jail? Because she got caught with the treble.",
+    "Why was the math teacher suspicious of prime numbers? They were always odd."
 ]
 
 # --- Study resources ---
@@ -91,13 +139,13 @@ def provide_study_resources(subject):
     else:
         return f"Sorry, I don't have study resources for {subject}. But I can help you with some general topics!"
 
-# --- Main respond function ---
+# --- Main respond function with auto symptom detection ---
 def respond(user_input):
     user_input_lower = user_input.lower().strip()
 
     # Polite replies
-    if user_input_lower in ["okay", "ok", "alright"]:
-        return "I’m glad I could help! If there’s anything more I can do, just let me know."
+    if user_input_lower in ["okay", "ok", "alright","okie","Ok","acha ok"]:
+        return "I’m glad I could help! If there’s anything more I can do, just let me know:)"
     elif user_input_lower in ["thank you", "thanks", "thx"]:
         return "You’re welcome! 😊"
 
@@ -127,15 +175,20 @@ def respond(user_input):
                 return provide_study_resources(sub)
         return "Please specify the subject (math, python, history, science)."
 
-    # Disease prediction
-    elif "symptoms" in user_input_lower or "predict" in user_input_lower:
-        symptoms = user_input_lower.split("symptoms")[-1].strip()
-        symptoms = symptoms.split(",")
-        return predict_disease(symptoms)
+    # Disease prediction — auto detect symptoms in sentence
+    symptoms_list = ["fever", "cough", "headache", "fatigue", "sore throat",
+                     "nausea", "shortness of breath", "diarrhea", "vomiting",
+                     "chills", "muscle pain", "dizziness", "rash", "runny nose"]
+    
+    # Detect any symptom mentioned anywhere in the sentence
+    detected_symptoms = [sym for sym in symptoms_list if re.search(r'\b' + re.escape(sym) + r'\b', user_input_lower)]
+    
+    if detected_symptoms:
+        return predict_disease(detected_symptoms)
 
     # Greetings & chit-chat
-    elif user_input_lower in ["hello", "hi", "hey", "greetings"]:
-        return random.choice(["Hello!", "Hi there!", "Hey!", "Greetings!"])
+    elif user_input_lower in ["hello", "hi", "hey", "greetings","assalamualaikum","aslkm","asak","assalamu alaikum","namaste"]:
+        return random.choice(["Hello!", "Hi there!", "Hey!", "Greetings!","waleikumassalam","walkm","wslkm","walikum salam","walaikumassalam","namaste"])
     elif "how are you" in user_input_lower:
         return "I’m just a bot, but I’m doing well! How about you?"
     elif "what's up" in user_input_lower or "whats up" in user_input_lower:
@@ -149,34 +202,27 @@ def respond(user_input):
     else:
         return chit_chat(user_input_lower)
 
-import streamlit as st
-import random
-
-# --- Your existing functions (respond, solve_math, jokes, etc.) go here ---
-# Make sure respond() and other helper functions are defined above
-
+# --- Streamlit Web Interface ---
 st.title("ChatBuddy 🤖")
 
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Display all previous messages in chat bubbles
+# Display previous messages as chat bubbles
 for message in st.session_state.messages:
     with st.chat_message("user"):
         st.markdown(message["user"])
     with st.chat_message("bot"):
         st.markdown(message["bot"])
 
-# New chat input
+# Input for new message
 if user_input := st.chat_input("Type your message here..."):
     # Generate bot response
     response = respond(user_input)
-    
-    # Store messages in session state
+    # Store in session
     st.session_state.messages.append({"user": user_input, "bot": response})
-    
-    # Display the latest messages
+    # Display latest messages
     with st.chat_message("user"):
         st.markdown(user_input)
     with st.chat_message("bot"):
