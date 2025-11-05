@@ -67,7 +67,7 @@ def respond(user_input):
     # Default fallback
     else:
         return chit_chat(user_input_lower)
-# Main Chat Loop
+'''# Main Chat Loop
 def chat():
     print("Chatbot: Hello! How can I assist you today?")
 
@@ -85,4 +85,25 @@ def chat():
 
 # Run the chatbot
 if __name__ == "__main__":
-    chat()
+    chat()'''
+import streamlit as st
+
+# Title of the chatbot
+st.title("ChatBuddy 🤖")
+
+# Session state keeps chat history
+if 'messages' not in st.session_state:
+    st.session_state.messages = []
+
+# Text input for the user
+user_input = st.text_input("You:")
+
+# When user enters text, generate response
+if user_input:
+    response = respond(user_input)  # your existing respond() function
+    st.session_state.messages.append({"user": user_input, "bot": response})
+
+# Display all previous messages
+for msg in st.session_state.messages:
+    st.write("You: " + msg["user"])
+    st.write("Bot: " + msg["bot"])
