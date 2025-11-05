@@ -67,25 +67,7 @@ def respond(user_input):
     # Default fallback
     else:
         return chit_chat(user_input_lower)
-'''# Main Chat Loop
-def chat():
-    print("Chatbot: Hello! How can I assist you today?")
 
-    while True:
-        user_input = input("You: ")
-
-        # If the user types 'exit' or 'bye', end the chat
-        if "bye" in user_input.lower() or "exit" in user_input.lower():
-            print("Chatbot: Goodbye! Have a nice day!")
-            break
-
-        # Respond to user input
-        response = respond(user_input)
-        print("Chatbot:", response)
-
-# Run the chatbot
-if __name__ == "__main__":
-    chat()'''
 import streamlit as st
 
 # Title of the chatbot
