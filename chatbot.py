@@ -149,21 +149,35 @@ def respond(user_input):
     else:
         return chit_chat(user_input_lower)
 
-# --- Streamlit Web Interface ---
+import streamlit as st
+import random
+
+# --- Your existing functions (respond, solve_math, jokes, etc.) go here ---
+# Make sure respond() and other helper functions are defined above
+
 st.title("ChatBuddy 🤖")
 
-# Keep chat history
-if 'messages' not in st.session_state:
+# Initialize chat history
+if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Text input
-user_input = st.text_input("You:")
+# Display all previous messages in chat bubbles
+for message in st.session_state.messages:
+    with st.chat_message("user"):
+        st.markdown(message["user"])
+    with st.chat_message("bot"):
+        st.markdown(message["bot"])
 
-if user_input:
+# New chat input
+if user_input := st.chat_input("Type your message here..."):
+    # Generate bot response
     response = respond(user_input)
+    
+    # Store messages in session state
     st.session_state.messages.append({"user": user_input, "bot": response})
-
-# Display chat
-for msg in st.session_state.messages:
-    st.markdown(f"**You:** {msg['user']}")
-    st.markdown(f"**Bot:** {msg['bot']}")
+    
+    # Display the latest messages
+    with st.chat_message("user"):
+        st.markdown(user_input)
+    with st.chat_message("bot"):
+        st.markdown(response)
