@@ -230,3 +230,14 @@ if user_input := st.chat_input("Type your message here..."):
         st.markdown(user_input)
     with st.chat_message("bot"):
         st.markdown(response)
+# 👇 Display chatbot capabilities at the bottom of the app
+st.markdown("---")
+st.subheader("💡 What I Can Do")
+st.markdown("""
+Here are a few things you can try asking me:
+- 😂 **Tell me a joke**
+- ➕ **Solve simple math problems** (like `12 + 8` or `9 * 7`)
+- 📚 **Give study resources** (for Math, Python, or Science)
+- 🩺 **Predict possible diseases** (e.g., “I have fever and sore throat”)
+- 💬 **Casual chat** (“Hi”, “Thanks”, etc.)
+""")
